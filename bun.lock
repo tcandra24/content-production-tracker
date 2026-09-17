@@ -5,7 +5,7 @@
       "name": "content-production-tracker",
       "dependencies": {
         "@neondatabase/serverless": "^1.0.2",
-        "@tailwindcss/vite": "^4.1.18",
+        "@tailwindcss/vite": "^4.3.3",
         "@tanstack/react-devtools": "latest",
         "@tanstack/react-query": "latest",
         "@tanstack/react-query-devtools": "latest",
@@ -20,7 +20,7 @@
         "pg": "^8.16.3",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
-        "tailwindcss": "^4.1.18",
+        "tailwindcss": "^4.3.3",
         "vite-plugin-neon-new": "^0.8.0",
       },
       "devDependencies": {
