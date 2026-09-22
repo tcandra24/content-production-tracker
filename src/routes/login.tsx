@@ -1,32 +1,51 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, redirect } from '@tanstack/react-router'
+import { getCurrentSession } from '#/server/function/session'
 import { useState } from 'react';
+import { useForm } from '@tanstack/react-form'
+import { authClient } from '#/lib/auth-client';
+import { loginSchema } from '#/lib/schemas/auth';
 
 export const Route = createFileRoute('/login')({
+  beforeLoad: async () => {
+    const session = await getCurrentSession()
+    if (session) throw redirect({ to: '/overview' })
+  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const [email, setEmail] = useState('alex@studioflow.io');
-  const [password, setPassword] = useState('••••••••••••••••');
   const [showPassword, setShowPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('')
   const [buttonState, setButtonState] = useState<'default' | 'loading' | 'success'>('default');
   const navigate = useNavigate();
 
-  const handleLogin = (e: import("react").FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setButtonState('loading');
-    
-    setTimeout(() => {
-      setButtonState('success');
-      setTimeout(() => {
-        navigate({
-          to: '/overview'
-        });
-      }, 1500);
-    }, 1000);
-  };
+  const form = useForm({
+    defaultValues: {
+      email: '',
+      password: ''
+    },
+    validators: {
+      onSubmit: loginSchema
+    },
+    onSubmit: async ({value}) => {
+      setSubmitError('')
+      setButtonState('loading')
+      
+      const { error } = await authClient.signIn.email({
+        email: value.email,
+        password: value.password
+      })
+
+      if (error) {
+        setSubmitError(error.message as string)
+        setButtonState('default')
+        return
+      }
+
+      setButtonState('success')
+      setTimeout(() => navigate({ to: '/overview' }), 800)
+    }
+  })
 
   return (
     <div className="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen flex items-center justify-center p-margin">
@@ -50,78 +69,113 @@ function RouteComponent() {
                 Sign in to access your production command center
               </p>
             </div>
-            <form className="w-full space-y-4" onSubmit={handleLogin}>
-              <div className="space-y-1.5">
-                <label className="block font-label-sm text-label-sm text-on-surface" htmlFor="email">
-                  Editorial Account
-                </label>
-                <div className="relative flex items-center">
-                  <span className="material-symbols-outlined absolute left-3 text-outline text-[18px] pointer-events-none">
-                    alternate_email
-                  </span>
-                  <input className="w-full h-10 pl-9 pr-3 bg-surface-container-low focus:bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface transition-all duration-150 outline-none focus:shadow-md" id="email" placeholder="name@studioflow.io" required type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <label className="block font-label-sm text-label-sm text-on-surface" htmlFor="password">
-                    Keyphrase
-                  </label>
-                  <span className="font-label-xs text-label-xs text-outline cursor-pointer hover:text-primary transition-colors">
-                    Session vault
-                  </span>
-                </div>
-                <div className="relative flex items-center">
-                  <span className="material-symbols-outlined absolute left-3 text-outline text-[18px] pointer-events-none">
-                    lock
-                  </span>
-                  <input className="w-full h-10 pl-9 pr-10 bg-surface-container-low focus:bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface transition-all duration-150 outline-none focus:shadow-md" id="password" placeholder="Enter password" required type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} />
-                  <button aria-label="Toggle password visibility" className="absolute right-2.5 p-1 text-outline hover:text-on-surface rounded transition-colors flex items-center justify-center focus:outline-none" type="button" onClick={() => setShowPassword(!showPassword)}>
-                    <span className="material-symbols-outlined text-[18px]">
-                      {showPassword ? 'visibility' : 'visibility_off'}
-                    </span>
-                  </button>
-                </div>
-              </div>
-              <div className="flex items-center justify-between pt-1">
-                <label className="flex items-center gap-2 cursor-pointer select-none group">
-                  <input defaultChecked className="sr-only peer" id="rememberMe" type="checkbox"/>
-                  <div className="w-4 h-4 rounded bg-surface-container-low peer-checked:bg-primary-container flex items-center justify-center transition-all duration-150 shadow-sm">
-                    <span className="material-symbols-outlined text-white text-[12px] opacity-0 peer-checked:opacity-100 transition-opacity">
-                      check
-                    </span>
-                  </div>
-                  <span className="font-body-sm text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors">
-                    Maintain terminal session
-                  </span>
-                </label>
-                <span className="font-label-xs text-label-xs text-outline flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">shield</span> Encrypted
-                </span>
-              </div>
-              <div className="pt-2">
-                <button disabled={isSubmitting} className={`w-full h-11 text-on-primary rounded-lg font-label-md text-label-md transition-all duration-150 flex items-center justify-center gap-2 shadow-sm shadow-primary/25 cursor-pointer ${buttonState === 'success' ? 'bg-secondary' : 'bg-primary-container hover:bg-primary active:scale-[0.99]'}`} type="submit">
-                  {buttonState === 'default' && (
-                    <>
-                      <span>Sign In</span>
-                      <span className="material-symbols-outlined text-[18px] transition-transform duration-150 group-hover:translate-x-0.5">
-                        arrow_forward
+            <form className="w-full space-y-4" onSubmit={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              form.handleSubmit()
+            }}>
+              <form.Field name='email'>
+                { (field) => (
+                  <div className="space-y-1.5">
+                    <label className="block font-label-sm text-label-sm text-on-surface" htmlFor={field.name}>
+                      Editorial Account
+                    </label>
+                    <div className="relative flex items-center">
+                      <span className="material-symbols-outlined absolute left-3 text-outline text-[18px] pointer-events-none">
+                        alternate_email
                       </span>
-                    </>
+                      <input
+                        id={field.name}
+                        name={field.name}
+                        className="w-full h-10 pl-9 pr-3 bg-surface-container-low focus:bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface transition-all duration-150 outline-none focus:shadow-md"
+                        placeholder="name@studioflow.io"
+                        type="email"
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                      />
+                    </div>
+                    {field.state.meta.errors.length > 0 && (
+                      <p className="text-error text-sm">
+                        {field.state.meta.errors.map((err: any) => err.message).join(', ')}
+                      </p>
+                    )}
+                  </div>
+                ) }
+              </form.Field>
+              <form.Field name='password'>
+                { (field) => (
+                  <div className="space-y-1.5">
+                    <label className="block font-label-sm text-label-sm text-on-surface" htmlFor={field.name}>
+                      Keyphrase
+                    </label>
+                    <div className="relative flex items-center">
+                      <span className="material-symbols-outlined absolute left-3 text-outline text-[18px] pointer-events-none">
+                        lock
+                      </span>
+                      <input
+                        id={field.name}
+                        name={field.name}
+                        className="w-full h-10 pl-9 pr-10 bg-surface-container-low focus:bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface transition-all duration-150 outline-none focus:shadow-md"
+                        placeholder="Enter password"
+                        type={showPassword ? 'text' : 'password'}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                      />
+                      <button
+                        aria-label="Toggle password visibility"
+                        className="absolute right-2.5 p-1 text-outline hover:text-on-surface rounded transition-colors flex items-center justify-center focus:outline-none"
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        <span className="material-symbols-outlined text-[18px]">
+                          {showPassword ? 'visibility' : 'visibility_off'}
+                        </span>
+                      </button>
+                    </div>
+                    {field.state.meta.errors.length > 0 && (
+                      <p className="text-error text-sm">
+                        {field.state.meta.errors.map((err: any) => err.message).join(', ')}
+                      </p>
+                    )}
+                  </div>
+                ) }
+              </form.Field>
+
+              {submitError && <p className="text-error text-sm font-label-sm">{submitError}</p>}
+
+              <div className="pt-2">
+                <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+                  {([canSubmit, isSubmitting]) => (
+                    <button
+                      disabled={!canSubmit || isSubmitting}
+                      className={`w-full h-11 text-on-primary rounded-lg font-label-md text-label-md transition-all duration-150 flex items-center justify-center gap-2 shadow-sm shadow-primary/25 cursor-pointer ${
+                        buttonState === 'success' ? 'bg-secondary' : 'bg-primary-container hover:bg-primary active:scale-[0.99]'
+                      }`}
+                      type="submit"
+                    >
+                      {buttonState === 'default' && (
+                        <>
+                          <span>Sign In</span>
+                          <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </>
+                      )}
+                      {buttonState === 'loading' && (
+                        <>
+                          <span className="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+                          <span>Authenticating...</span>
+                        </>
+                      )}
+                      {buttonState === 'success' && (
+                        <>
+                          <span className="material-symbols-outlined text-[18px]">verified_user</span>
+                          <span>Access Granted</span>
+                        </>
+                      )}
+                    </button>
                   )}
-                  {buttonState === 'loading' && (
-                    <>
-                      <span className="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
-                      <span>Authenticating...</span>
-                    </>
-                  )}
-                  {buttonState === 'success' && (
-                    <>
-                      <span className="material-symbols-outlined text-[18px]">verified_user</span>
-                      <span>Access Granted</span>
-                    </>
-                  )}
-                </button>
+                </form.Subscribe>
               </div>
             </form>
             <div className="mt-8 pt-6 w-full flex flex-col items-center justify-center">

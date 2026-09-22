@@ -1,11 +1,29 @@
-import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
+import { authClient } from '#/lib/auth-client'
+import { createFileRoute, Link, Outlet, redirect, useLocation, useNavigate } from '@tanstack/react-router'
+import { getCurrentSession } from '#/server/function/session'
 
 export const Route = createFileRoute('/_dashboard')({
+  beforeLoad: async () => {
+    const session = await getCurrentSession()
+    if (!session) throw redirect({ to: '/login' })
+
+    return {
+      session
+    }
+  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
-   const location = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate()
+
+   const { data: session } = authClient.useSession()
+
+  const logout = async () => {
+  await authClient.signOut()
+  navigate({ to: '/login' })
+  }
 
   return (
     <div className="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen">
@@ -32,8 +50,19 @@ function RouteComponent() {
           <button className="flex items-center justify-center w-8 h-8 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors">
             <span className="material-symbols-outlined text-[18px]">notifications</span>
           </button>
-          <div className="flex items-center gap-2 pl-1">
-            <img alt="Profile" className="w-8 h-8 rounded-full object-cover ring-1 ring-surface-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFBTkSyfdQYbe16l1voPaBZhqvCiytPO05cEt-0ZmO-rvNtuU41ESOLSHMkFd3TDKqWfqULMDuTnC3jUOlgvRbuBZPi5SzvkTepFsr2ZOydcG5Xpgx8YJbUTEaQUzjO1JV333i2l_I58-O6o2z8ot5ACZO6xdi_PjBlGdhRIVA98C8pooigIuma02DFyiIny6sHWb72Iy1gkCyy2hcH-Qy6Ys82sxRHnh7REVbfeTvJMf1hp_mF3e7CQ" />
+          <div className="flex items-center gap-2.5 pl-1">
+            <div className="relative shrink-0">
+              <img alt="Profile" className="w-8 h-8 rounded-full object-cover ring-1 ring-surface-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFBTkSyfdQYbe16l1voPaBZhqvCiytPO05cEt-0ZmO-rvNtuU41ESOLSHMkFd3TDKqWfqULMDuTnC3jUOlgvRbuBZPi5SzvkTepFsr2ZOydcG5Xpgx8YJbUTEaQUzjO1JV333i2l_I58-O6o2z8ot5ACZO6xdi_PjBlGdhRIVA98C8pooigIuma02DFyiIny6sHWb72Iy1gkCyy2hcH-Qy6Ys82sxRHnh7REVbfeTvJMf1hp_mF3e7CQ" />
+              <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-1 ring-surface-container-lowest"></span>
+            </div>
+            <div className="hidden md:flex flex-col text-left leading-tight">
+              <span className="font-label-sm text-label-sm font-medium text-on-surface truncate max-w-32.5">
+                { session?.user.name }
+              </span>
+              <span className="font-label-xs text-label-xs text-outline truncate max-w-32.5" title={ session?.user.email }>
+                { session?.user.email }
+              </span>
+            </div>
           </div>
         </div>
       </header>
@@ -52,22 +81,35 @@ function RouteComponent() {
               <span className="material-symbols-outlined text-[18px]">database</span>
               <span>Content Database</span>
             </Link>
-            
-            
+            <Link to="/categories" className={`flex items-center gap-2.5 px-2.5 py-2 rounded transition-colors font-label-md text-label-md ${location.pathname === '/categories' ? 'bg-primary-container text-on-primary font-medium shadow-sm' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'}`}>
+              <span className="material-symbols-outlined text-[18px]">category</span>
+              <span>Categories</span>
+            </Link>
           </nav>
         </div>
         <div className="flex flex-col gap-1 border-t border-surface-variant pt-space-sm">
-          <div className="flex items-center justify-between px-2.5 py-2 text-on-surface-variant">
-            <span className="font-label-xs text-label-xs text-outline">Storage Used</span>
-            <span className="font-label-xs text-label-xs text-on-surface font-medium">4.2 / 10 GB</span>
+          <div className="flex items-center gap-2.5 px-2.5 py-2 rounded-xl bg-surface-container-low/70 border border-surface-variant/60">
+            <div className="relative shrink-0">
+              <img
+                alt="dsgfsdg"
+                className="w-8 h-8 rounded-full object-cover ring-1 ring-surface-variant"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFBTkSyfdQYbe16l1voPaBZhqvCiytPO05cEt-0ZmO-rvNtuU41ESOLSHMkFd3TDKqWfqULMDuTnC3jUOlgvRbuBZPi5SzvkTepFsr2ZOydcG5Xpgx8YJbUTEaQUzjO1JV333i2l_I58-O6o2z8ot5ACZO6xdi_PjBlGdhRIVA98C8pooigIuma02DFyiIny6sHWb72Iy1gkCyy2hcH-Qy6Ys82sxRHnh7REVbfeTvJMf1hp_mF3e7CQ"
+              />
+              <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-1 ring-surface-container-lowest"></span>
+            </div>
+            <div className="flex flex-col min-w-0 flex-1">
+              <span className="font-label-sm text-label-sm text-on-surface font-semibold truncate leading-tight">
+                { session?.user.name }
+              </span>
+              <span className="font-label-xs text-label-xs text-on-surface-variant truncate leading-tight mt-0.5" title={ session?.user.email }>
+                { session?.user.email }
+              </span>
+            </div>
           </div>
-          <div className="w-full bg-surface-container rounded-full h-1 px-0.5 overflow-hidden mb-2">
-            <div className="bg-primary h-full rounded-full w-[42%]"></div>
-          </div>
-          <Link to="/login" className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg transition-colors font-label-md text-label-md text-on-surface-variant hover:bg-error-container/20 hover:text-error w-full">
+          <button onClick={() => logout()} className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg transition-colors font-label-md text-label-md text-on-surface-variant hover:bg-error-container/20 hover:text-error w-full">
             <span className="material-symbols-outlined text-[18px]">logout</span>
             <span>Sign Out</span>
-          </Link>
+          </button>
         </div>
       </aside>
 

@@ -1,3 +1,4 @@
+import { authClient } from '#/lib/auth-client';
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState } from 'react';
 
@@ -7,6 +8,7 @@ export const Route = createFileRoute('/_dashboard/overview')({
 
 function RouteComponent() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { data: session } = authClient.useSession()
 
   return (
      <div className="flex flex-col w-full relative">
@@ -18,7 +20,7 @@ function RouteComponent() {
             <span className="text-primary font-medium">Sprint 42 Live</span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight">
-            Good morning, Alex. Here's your production velocity for this week.
+            Good morning, { session?.user.name }. Here's your production velocity for this week.
           </h1>
           <p className="font-body-sm text-body-sm text-on-surface-variant">
             Pipeline health is optimal with 8 deliverables completed toward the monthly 10-asset goal.
