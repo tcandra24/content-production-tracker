@@ -65,7 +65,7 @@ function RouteComponent() {
         </div>
       </header>
 
-      <aside className="fixed left-0 top-14 bottom-0 w-60 bg-surface-container-lowest border-r border-surface-variant z-40 flex flex-col justify-between p-space-md">
+      <aside className="fixed left-0 top-18 bottom-0 w-60 bg-surface-container-lowest border-r border-surface-variant z-40 flex flex-col justify-between p-space-md">
         <div className="flex flex-col gap-space-md">
           <div className="px-2 py-1">
             <p className="font-label-xs text-label-xs uppercase tracking-wider text-outline">Production Views</p>
@@ -112,7 +112,7 @@ function RouteComponent() {
       </aside>
 
       <div className="pl-60">
-        <main className="relative pt-14 min-h-screen bg-background w-full">
+        <main className="relative pt-16 min-h-screen bg-background w-full">
           <Outlet />
         </main>
       </div>
