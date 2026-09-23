@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const taskSchema = z.object({
-  title: z.string().min(10, 'Title must at least 10 character').max(150, 'Title must be at moth 150 character'),
+  title: z.string().min(10, 'Title must at least 10 character').max(150, 'Title must be at most 150 character'),
   categoryId: z.string().uuid('Category wajib dipilih'),
   contentType: z.enum(['article', 'video']),
   stage: z.enum(['idea', 'scripting', 'production', 'editing', 'published']),

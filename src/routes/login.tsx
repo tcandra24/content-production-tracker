@@ -58,10 +58,6 @@ function RouteComponent() {
               <div className="h-10 flex items-center justify-center mb-6">
                 <img alt="StudioFlow Logo" className="h-9 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WBIu3wMl0Tb_Gch_QF0K2kZI8kKFOT7N_MXANEbFbPAEn8sA0iv4RYh3Y2WkPXPC6aZacshBS-bUA92_6wphnVzErNuylJgyhH8cdrUlbQrW0Sx9t-aUVEAdK9Z2SMsD5m9PFsdw-PKp4oI9fCB2PBRNyX9go1Zl0v2XSCSd3_fwaSk3yN-L1qFLR1PwtIGMKrwLjTb9c8BJyQoFegEaJzbp6PGctGnQREX0H8pd7xTqswxD3tRpH7Y4n2"/>
               </div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low mb-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                <span className="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Studio Engine v2.4</span>
-              </div>
               <h1 className="font-headline-lg text-headline-lg text-on-surface text-center tracking-tight">
                 Welcome back, Creator
               </h1>
@@ -81,14 +77,14 @@ function RouteComponent() {
                       Editorial Account
                     </label>
                     <div className="relative flex items-center">
-                      <span className="material-symbols-outlined absolute left-3 text-outline text-[18px] pointer-events-none">
+                      <span className="material-symbols-outlined absolute left-2 text-outline text-[18px] pointer-events-none">
                         alternate_email
                       </span>
                       <input
                         id={field.name}
                         name={field.name}
-                        className="w-full h-10 pl-9 pr-3 bg-surface-container-low focus:bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface transition-all duration-150 outline-none focus:shadow-md"
-                        placeholder="name@studioflow.io"
+                        className="w-full h-10 pl-10 pr-3 bg-surface-container-low focus:bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface transition-all duration-150 outline-none focus:shadow-md"
+                        placeholder="Enter Email"
                         type="email"
                         value={field.state.value}
                         onBlur={field.handleBlur}
@@ -96,7 +92,7 @@ function RouteComponent() {
                       />
                     </div>
                     {field.state.meta.errors.length > 0 && (
-                      <p className="text-error text-sm">
+                      <p className="text-error text-xs">
                         {field.state.meta.errors.map((err: any) => err.message).join(', ')}
                       </p>
                     )}
@@ -110,13 +106,13 @@ function RouteComponent() {
                       Keyphrase
                     </label>
                     <div className="relative flex items-center">
-                      <span className="material-symbols-outlined absolute left-3 text-outline text-[18px] pointer-events-none">
+                      <span className="material-symbols-outlined absolute left-2 text-outline text-[18px] pointer-events-none">
                         lock
                       </span>
                       <input
                         id={field.name}
                         name={field.name}
-                        className="w-full h-10 pl-9 pr-10 bg-surface-container-low focus:bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface transition-all duration-150 outline-none focus:shadow-md"
+                        className="w-full h-10 pl-10 pr-10 bg-surface-container-low focus:bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface transition-all duration-150 outline-none focus:shadow-md"
                         placeholder="Enter password"
                         type={showPassword ? 'text' : 'password'}
                         value={field.state.value}
@@ -135,7 +131,7 @@ function RouteComponent() {
                       </button>
                     </div>
                     {field.state.meta.errors.length > 0 && (
-                      <p className="text-error text-sm">
+                      <p className="text-error text-xs">
                         {field.state.meta.errors.map((err: any) => err.message).join(', ')}
                       </p>
                     )}
@@ -143,7 +139,7 @@ function RouteComponent() {
                 ) }
               </form.Field>
 
-              {submitError && <p className="text-error text-sm font-label-sm">{submitError}</p>}
+              {submitError && <p className="text-error text-xs font-label-xs">{submitError}</p>}
 
               <div className="pt-2">
                 <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
@@ -186,20 +182,13 @@ function RouteComponent() {
                   Private command center — invite only access.
                 </p>
               </div>
-              <p className="font-label-xs text-label-xs text-outline mt-3 text-center">
-                Pipeline ID: <span className="font-mono text-outline">sf-node-9421-prod</span>
-              </p>
             </div>
           </div>
-          <div className="mt-4 flex items-center justify-between px-2 text-outline">
-            <div className="flex items-center gap-1.5 font-label-xs text-label-xs">
-              <span className="inline-block w-2 h-2 rounded-full bg-secondary-fixed-dim animate-pulse"></span>
-              <span>Relay status: nominal</span>
-            </div>
+          <div className="mt-4 flex items-center justify-center px-2 text-outline">
             <div className="flex items-center gap-3 font-label-xs text-label-xs">
-              <span>UTC+00:00</span>
+              <span>UTC { new Date().getTimezoneOffset() / 60 }</span>
               <span>•</span>
-              <span>v3.12.0</span>
+              <span>v0.9.1</span>
             </div>
           </div>
         </div>
