@@ -27,7 +27,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Temple Flow',
+        title: 'Temple Flow - Content Product Tracker',
       },
     ],
     links: [
