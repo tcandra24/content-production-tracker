@@ -56,7 +56,7 @@ function RouteComponent() {
           <div className="w-full bg-surface-container-lowest rounded-xl shadow-xl p-8 sm:p-10 flex flex-col items-center">
             <div className="flex flex-col items-center mb-8 w-full">
               <div className="h-10 flex items-center justify-center mb-6">
-                <img alt="StudioFlow Logo" className="h-9 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WBIu3wMl0Tb_Gch_QF0K2kZI8kKFOT7N_MXANEbFbPAEn8sA0iv4RYh3Y2WkPXPC6aZacshBS-bUA92_6wphnVzErNuylJgyhH8cdrUlbQrW0Sx9t-aUVEAdK9Z2SMsD5m9PFsdw-PKp4oI9fCB2PBRNyX9go1Zl0v2XSCSd3_fwaSk3yN-L1qFLR1PwtIGMKrwLjTb9c8BJyQoFegEaJzbp6PGctGnQREX0H8pd7xTqswxD3tRpH7Y4n2"/>
+                <img alt="StudioFlow Logo" className="h-16 w-auto object-contain" src="/logo.png"/>
               </div>
               <h1 className="font-headline-lg text-headline-lg text-on-surface text-center tracking-tight">
                 Welcome back, Creator

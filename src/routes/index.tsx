@@ -19,17 +19,15 @@ function Home() {
   return (
     <div className="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary">
       {/* Top Navigation */}
-      <header className="sticky top-0 inset-x-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-variant z-50 flex items-center justify-between px-6 sm:px-10 shadow-[0_1px_8px_rgba(0,0,0,0.02)]">
+      <header className="sticky top-0 inset-x-0 h-19 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-variant z-50 flex items-center justify-between px-6 sm:px-10 shadow-[0_1px_8px_rgba(0,0,0,0.02)]">
         <div className="flex items-center gap-space-md">
           <Link to="/" className="flex items-center gap-3 group">
             <img 
               alt="StudioFlow Logo" 
-              className="h-8 w-auto object-contain transition-transform group-hover:scale-105" 
-              src="https://lh3.googleusercontent.com/aida/AEtjO1WBIu3wMl0Tb_Gch_QF0K2kZI8kKFOT7N_MXANEbFbPAEn8sA0iv4RYh3Y2WkPXPC6aZacshBS-bUA92_6wphnVzErNuylJgyhH8cdrUlbQrW0Sx9t-aUVEAdK9Z2SMsD5m9PFsdw-PKp4oI9fCB2PBRNyX9go1Zl0v2XSCSd3_fwaSk3yN-L1qFLR1PwtIGMKrwLjTb9c8BJyQoFegEaJzbp6PGctGnQREX0H8pd7xTqswxD3tRpH7Y4n2" 
+              className="h-16 w-auto object-contain transition-transform group-hover:scale-105" 
+              src="/logo.png" 
             />
             <div className="flex items-center gap-2">
-              <span className="font-headline-sm text-headline-sm text-on-surface">StudioFlow</span>
-              <span className="text-outline-variant font-label-xs text-label-xs">/</span>
               <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-xs text-label-xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
                 <span>Editorial Engine</span>
@@ -37,28 +35,6 @@ function Home() {
             </div>
           </Link>
         </div>
-
-        {/* Center links */}
-        <nav className="hidden md:flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full border border-surface-variant/80">
-          <Link 
-            to="/overview" 
-            className="px-3.5 py-1.5 rounded-full text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest transition-colors"
-          >
-            Velocity
-          </Link>
-          <Link 
-            to="/content" 
-            className="px-3.5 py-1.5 rounded-full text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest transition-colors"
-          >
-            Content Database
-          </Link>
-          <Link 
-            to="/categories" 
-            className="px-3.5 py-1.5 rounded-full text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest transition-colors"
-          >
-            Categories
-          </Link>
-        </nav>
 
         {/* Right Action Buttons - No user data */}
         <div className="flex items-center gap-3">
@@ -96,7 +72,7 @@ function Home() {
           </div>
 
           {/* Main Headline */}
-          <h1 className="font-headline-xl text-headline-xl text-on-surface tracking-tight max-w-3xl sm:text-[44px] sm:leading-[52px]">
+          <h1 className="font-headline-xl text-headline-xl text-on-surface tracking-tight max-w-3xl sm:text-[44px] sm:leading-13">
             The High-Output Command Center for Solo Media Creators
           </h1>
 
@@ -433,7 +409,7 @@ function Home() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="p-4 rounded-xl bg-surface-container-low/70 border border-surface-variant/70 flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#4f46e5] text-white flex items-center justify-center flex-shrink-0 shadow-xs">
+                    <div className="w-10 h-10 rounded-xl bg-[#4f46e5] text-white flex items-center justify-center shrink-0 shadow-xs">
                       <span className="material-symbols-outlined text-[20px]">devices</span>
                     </div>
                     <div>
@@ -444,7 +420,7 @@ function Home() {
                   </div>
 
                   <div className="p-4 rounded-xl bg-surface-container-low/70 border border-surface-variant/70 flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#059669] text-white flex items-center justify-center flex-shrink-0 shadow-xs">
+                    <div className="w-10 h-10 rounded-xl bg-[#059669] text-white flex items-center justify-center shrink-0 shadow-xs">
                       <span className="material-symbols-outlined text-[20px]">bolt</span>
                     </div>
                     <div>
@@ -455,7 +431,7 @@ function Home() {
                   </div>
 
                   <div className="p-4 rounded-xl bg-surface-container-low/70 border border-surface-variant/70 flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#d97706] text-white flex items-center justify-center flex-shrink-0 shadow-xs">
+                    <div className="w-10 h-10 rounded-xl bg-[#d97706] text-white flex items-center justify-center shrink-0 shadow-xs">
                       <span className="material-symbols-outlined text-[20px]">article</span>
                     </div>
                     <div>

@@ -27,12 +27,10 @@ function RouteComponent() {
 
   return (
     <div className="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen">
-      <header className="fixed top-0 inset-x-0 h-14 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-variant z-50 flex items-center justify-between px-margin shadow-[0_1px_8px_rgba(0,0,0,0.02)]">
+      <header className="fixed top-0 inset-x-0 h-19 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-variant z-50 flex items-center justify-between px-margin shadow-[0_1px_8px_rgba(0,0,0,0.02)]">
         <div className="flex items-center gap-space-md">
-          <img alt="StudioFlow Logo" className="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WBIu3wMl0Tb_Gch_QF0K2kZI8kKFOT7N_MXANEbFbPAEn8sA0iv4RYh3Y2WkPXPC6aZacshBS-bUA92_6wphnVzErNuylJgyhH8cdrUlbQrW0Sx9t-aUVEAdK9Z2SMsD5m9PFsdw-PKp4oI9fCB2PBRNyX9go1Zl0v2XSCSd3_fwaSk3yN-L1qFLR1PwtIGMKrwLjTb9c8BJyQoFegEaJzbp6PGctGnQREX0H8pd7xTqswxD3tRpH7Y4n2" />
+          <img alt="StudioFlow Logo" className="h-16 w-auto object-contain" src="/logo.png" />
           <div className="flex items-center gap-space-xs">
-            <span className="font-headline-sm text-headline-sm text-on-surface">StudioFlow</span>
-            <span className="text-outline-variant font-label-xs text-label-xs">/</span>
             <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-xs text-label-xs">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
               <span>Solo Studio (Personal)</span>
